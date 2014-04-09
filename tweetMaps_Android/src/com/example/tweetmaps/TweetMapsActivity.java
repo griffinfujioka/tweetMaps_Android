@@ -4,23 +4,24 @@ import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import twitter4j.Twitter; 
+import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.RequestToken;
 import android.util.Log; 
@@ -72,6 +73,24 @@ public class TweetMapsActivity extends FragmentActivity implements
 		    //no user preferences so prompt to sign in 
 			setContentView(R.layout.activity_main);
 			
+			//get a twitter instance for authentication 
+			twitter = new TwitterFactory().getInstance();
+			
+			//pass developer key and secret 
+			twitter.setOAuthConsumer(TWIT_KEY, TWIT_SECRET); 
+//			
+//			//try to get request token 
+//			try 
+//			{ 
+//			    //get authentication request token 
+//				requestToken = twitter.getOAuthRequestToken(TWIT_URL); 
+//			} 
+//			catch(TwitterException te) { Log.e(LOG_TAG, "TE " + te.getMessage()); } 
+			
+			//setup button for click listener 
+			Button signIn = (Button)findViewById(R.id.signin); 
+			signIn.setOnClickListener(this); 
+			
 		  
 		} 
 		else 
@@ -80,11 +99,7 @@ public class TweetMapsActivity extends FragmentActivity implements
 		    //setupTimeline(); 
 		} 
 
-		//get a twitter instance for authentication 
-		twitter = new TwitterFactory().getInstance();
 		
-		//pass developer key and secret 
-		twitter.setOAuthConsumer(TWIT_KEY, TWIT_SECRET); 
 		
 		
 		// Set up the action bar.
@@ -93,35 +108,55 @@ public class TweetMapsActivity extends FragmentActivity implements
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
-
-		// Set up the ViewPager with the sections adapter.
-		//mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
-
-		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
+//		mSectionsPagerAdapter = new SectionsPagerAdapter(
+//				getSupportFragmentManager());
+//
+//		// Set up the ViewPager with the sections adapter.
+//		//mViewPager = (ViewPager) findViewById(R.id.pager);
+//		mViewPager.setAdapter(mSectionsPagerAdapter);
+//
+//		// When swiping between different sections, select the corresponding
+//		// tab. We can also use ActionBar.Tab#select() to do this if we have
+//		// a reference to the Tab.
+//		mViewPager
+//				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+//					@Override
+//					public void onPageSelected(int position) {
+//						actionBar.setSelectedNavigationItem(position);
+//					}
+//				});
+//
+//		// For each of the sections in the app, add a tab to the action bar.
+//		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+//			// Create a tab with text corresponding to the page title defined by
+//			// the adapter. Also specify this Activity object, which implements
+//			// the TabListener interface, as the callback (listener) for when
+//			// this tab is selected.
+//			actionBar.addTab(actionBar.newTab()
+//					.setText(mSectionsPagerAdapter.getPageTitle(i))
+//					.setTabListener(this));
+//		}
 	}
+	
+	/** 
+	 * Click listener handles sign in and tweet button presses 
+	 */
+	@Override
+	public void onClick(View v) { 
+	    //find view 
+	    switch(v.getId()) { 
+	        //sign in button pressed 
+	        case R.id.signin: 
+	            //take user to twitter authentication web page to allow app access to their twitter account 
+	            String authURL = requestToken.getAuthenticationURL(); 
+	            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(authURL))); 
+	            break; 
+	    //other listeners here 
+	  
+	    default: 
+	        break; 
+	    } 
+	} 
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,11 +252,4 @@ public class TweetMapsActivity extends FragmentActivity implements
 			return rootView;
 		}
 	}
-
-	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
