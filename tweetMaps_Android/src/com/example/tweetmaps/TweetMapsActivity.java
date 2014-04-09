@@ -1,6 +1,9 @@
 package com.example.tweetmaps;
 
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import twitter4j.Twitter; 
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import android.util.Log; 
 
@@ -30,11 +34,11 @@ public class TweetMapsActivity extends FragmentActivity implements
 		ActionBar.TabListener, OnClickListener {
 	
 	/**developer account key for this app*/
-	public final static String TWIT_KEY = "your key"; 
+	public final static String TWIT_KEY = "NL0aeIMRGDbmcaMvqDpLE6sPK"; 
 	/**developer secret for the app*/
-	public final static String TWIT_SECRET = "your secret"; 
+	public final static String TWIT_SECRET = "yYe8Rw13BL18FZv8i5AS8IFcrA9gqSpO0z03TUKmAYs5Ul8QjN"; 
 	/**app url*/
-	public final static String TWIT_URL = "tnice-android:///"; 
+	public final static String TWIT_URL = "twitterapp://connect"; 
 	
 	/**Twitter instance*/
 	private Twitter twitter; 
@@ -78,14 +82,29 @@ public class TweetMapsActivity extends FragmentActivity implements
 			
 			//pass developer key and secret 
 			twitter.setOAuthConsumer(TWIT_KEY, TWIT_SECRET); 
-//			
-//			//try to get request token 
-//			try 
-//			{ 
-//			    //get authentication request token 
-//				requestToken = twitter.getOAuthRequestToken(TWIT_URL); 
-//			} 
-//			catch(TwitterException te) { Log.e(LOG_TAG, "TE " + te.getMessage()); } 
+			
+			ExecutorService executorService = Executors.newFixedThreadPool(1);
+
+			executorService.execute(new Runnable() {
+			    public void run() {
+			    	//get authentication request token 
+		        	try {
+						requestToken = twitter.getOAuthRequestToken(TWIT_URL);
+					} catch (TwitterException e) {
+						Log.e(LOG_TAG,  "E " + e.getMessage()); 
+					} catch(Exception e) { 
+						Log.e(LOG_TAG,  "E " + e.getMessage()); 
+					}
+			    }
+			});
+			
+			executorService.shutdown(); 
+
+			try {
+				executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+			} catch (InterruptedException e) {
+				Log.e(LOG_TAG,  "E " + e.getMessage()); 
+			}
 			
 			//setup button for click listener 
 			Button signIn = (Button)findViewById(R.id.signin); 
