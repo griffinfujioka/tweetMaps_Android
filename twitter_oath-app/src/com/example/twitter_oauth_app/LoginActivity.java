@@ -1,20 +1,34 @@
 package com.example.twitter_oauth_app;
 
+import twitter4j.auth.RequestToken;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 
 public class LoginActivity extends Activity {
 
+	Button loginButton; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		initializeComponent(); 
 	}
+	
+	private void initializeComponent() {
+		loginButton = (Button) findViewById(R.id.loginButton);
+
+		loginButton.setOnClickListener(buttonLoginOnClickListener);
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -34,11 +48,26 @@ public class LoginActivity extends Activity {
 	        }
 	        else
 	        {
-	            Intent intent = new Intent(MainActivity.this, TwitterActivity.class);
+	            Intent intent = new Intent(LoginActivity.this, TwitterActivity.class);
 	            startActivity(intent);
 	        }
 	 
 	    }
 	};
 
+	class TwitterAuthenticateTask extends AsyncTask<String, String, RequestToken> {
+
+        @Override
+        protected void onPostExecute(RequestToken requestToken) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL()));
+            startActivity(intent);
+            
+            System.out.println("Successfully logged in to Twitter."); 
+        }
+
+        @Override
+        protected RequestToken doInBackground(String... params) {
+            return TwitterUtil.getInstance().getRequestToken();
+        }
+    }
 }
