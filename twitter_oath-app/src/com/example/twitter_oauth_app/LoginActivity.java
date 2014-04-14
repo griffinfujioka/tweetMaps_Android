@@ -1,5 +1,7 @@
 package com.example.twitter_oauth_app;
 
+import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
+import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
 import twitter4j.auth.RequestToken;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,11 +18,24 @@ import android.widget.Button;
 public class LoginActivity extends Activity {
 
 	Button loginButton; 
+	private CommonsHttpOAuthProvider commonsHttpOAuthProvider;
+    private CommonsHttpOAuthConsumer commonsHttpOAuthConsumer;
+    public static final String TWITTER_OAUTH_REQUEST_TOKEN_ENDPOINT = "http://twitter.com/oauth/request_token";
+    public static final String TWITTER_OAUTH_ACCESS_TOKEN_ENDPOINT = "http://twitter.com/oauth/access_token";
+    public static final String TWITTER_OAUTH_AUTHORIZE_ENDPOINT = "http://twitter.com/oauth/authorize";
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		
+		commonsHttpOAuthProvider = new CommonsHttpOAuthProvider(TWITTER_OAUTH_REQUEST_TOKEN_ENDPOINT,
+                TWITTER_OAUTH_ACCESS_TOKEN_ENDPOINT, TWITTER_OAUTH_AUTHORIZE_ENDPOINT);
+        commonsHttpOAuthConsumer = new CommonsHttpOAuthConsumer(ConstantValues.TWITTER_CONSUMER_KEY,
+        		ConstantValues.TWITTER_CONSUMER_SECRET);
+        commonsHttpOAuthProvider.setOAuth10a(true);
+//        TwDialog dialog = new TwDialog(this, commonsHttpOAuthProvider, commonsHttpOAuthConsumer,
+//                dialogListener, R.drawable.android);
+        dialog.show();
 		initializeComponent(); 
 	}
 	

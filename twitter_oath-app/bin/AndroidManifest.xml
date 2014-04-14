@@ -32,7 +32,7 @@
 		        <action android:name="android.intent.action.VIEW"/>
 		        <category android:name="android.intent.category.DEFAULT"/>
 		        <category android:name="android.intent.category.BROWSABLE"/>
-		        <data android:scheme="twitter_oath-app" android:host="callback"  />
+		        <data android:scheme="twitter_oauth-app" android:host="callback"  />
 		    </intent-filter>
 		</activity>
     </application>
