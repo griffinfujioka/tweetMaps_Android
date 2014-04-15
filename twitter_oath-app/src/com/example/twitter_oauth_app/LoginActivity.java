@@ -35,7 +35,7 @@ public class LoginActivity extends Activity {
         commonsHttpOAuthProvider.setOAuth10a(true);
 //        TwDialog dialog = new TwDialog(this, commonsHttpOAuthProvider, commonsHttpOAuthConsumer,
 //                dialogListener, R.drawable.android);
-        dialog.show();
+        //dialog.show();
 		initializeComponent(); 
 	}
 	
