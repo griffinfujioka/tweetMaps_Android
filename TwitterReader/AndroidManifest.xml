@@ -19,7 +19,7 @@
 				<data android:scheme="callback" android:host="tweeter" />
 			</intent-filter>
         </activity>
-        <activity android:name=".TweetsActivity"></activity>
+        <activity android:name=".TwitterActivity"></activity>
 
     </application>
 

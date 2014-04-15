@@ -75,7 +75,7 @@ public class AuthActivity extends Activity {
 	 */
 	private void startFirstActivity() {
 		System.out.println("STARTING FIRST ACTIVITY!");
-		Intent i = new Intent(this, TweetsActivity.class);
+		Intent i = new Intent(this, TwitterActivity.class);
 		startActivityForResult(i, Constants.ACTIVITY_LATEST_TWEETS);
 	}
 
