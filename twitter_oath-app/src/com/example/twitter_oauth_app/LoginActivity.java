@@ -65,8 +65,8 @@ public class LoginActivity extends Activity {
 						    public void run() {
 						    	//get authentication request token 
 					        	try {
-					        		//askOAuth();
-					        		doOAuth(); 
+					        		askOAuth();
+					        		//doOAuth(); 
 					        	} catch(Exception e) { 
 					        		// TODO; 
 					        	}

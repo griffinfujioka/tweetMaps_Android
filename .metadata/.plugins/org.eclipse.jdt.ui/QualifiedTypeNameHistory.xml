@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="twitter4j.auth.AccessToken"/>
+<fullyQualifiedTypeName name="com.example.twitter_oauth_app.TwitterActivity"/>
+<fullyQualifiedTypeName name="android.app.Application"/>
+<fullyQualifiedTypeName name="twitter4j.Twitter"/>
+<fullyQualifiedTypeName name="oauth.signpost.OAuthProvider"/>
+<fullyQualifiedTypeName name="oauth.signpost.commonshttp.CommonsHttpOAuthConsumer"/>
+<fullyQualifiedTypeName name="java.util.concurrent.ExecutorService"/>
+<fullyQualifiedTypeName name="java.util.concurrent.Executors"/>
+<fullyQualifiedTypeName name="java.util.concurrent.TimeUnit"/>
+<fullyQualifiedTypeName name="android.webkit.WebView"/>
+<fullyQualifiedTypeName name="android.webkit.WebViewClient"/>
 </qualifiedTypeNameHistroy>
